@@ -5,8 +5,9 @@ import 'package:flutterwave_standard/models/requests/standard_request.dart';
 import 'package:flutterwave_standard/models/responses/charge_response.dart';
 import 'package:flutterwave_standard/models/responses/standard_response.dart';
 import 'package:flutterwave_standard/models/subaccount.dart';
+import 'package:flutterwave_standard/utils.dart';
 import 'package:flutterwave_standard/view/flutterwave_style.dart';
-import 'package:flutterwave_standard/view/standard_webview.dart';
+import 'package:flutterwave_standard/view/standard_widget.dart';
 import 'package:flutterwave_standard/view/view_utils.dart';
 import 'package:http/http.dart';
 
@@ -20,11 +21,12 @@ class Flutterwave {
   String publicKey;
   String paymentOptions;
   String redirectUrl;
-  String? currency;
+  String currency;
   String? paymentPlanId;
   List<SubAccount>? subAccounts;
   Map<dynamic, dynamic>? meta;
   FlutterwaveStyle? style;
+  ChargeResponse? response;
 
   Flutterwave(
       {required this.context,
@@ -36,13 +38,13 @@ class Flutterwave {
       required this.customization,
       required this.redirectUrl,
       required this.isTestMode,
-      this.currency,
+      required this.currency,
       this.paymentPlanId,
       this.subAccounts,
       this.meta,
       this.style});
 
-  /// Starts Standard Transaction
+  /// Starts a transaction by calling the Standard service
   Future<ChargeResponse> charge() async {
     final request = StandardRequest(
         txRef: txRef,
@@ -83,24 +85,17 @@ class Flutterwave {
           txRef: request.txRef, status: "error", success: false);
     }
 
-    final transactionResult = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => StandardWebView(
-          url: standardResponse!.data!.link!,
+    final response = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => StandardPaymentWidget(
+            webUrl: standardResponse!.data!.link!,
+          ),
         ),
-      ),
-    );
+      );
 
-    if (transactionResult == null) {
-      return ChargeResponse(
-          txRef: request.txRef, status: "cancelled", success: false);
-    }
-    if (transactionResult.runtimeType == ChargeResponse().runtimeType) {
-      return transactionResult;
+    if (response != null) return response!;
+    return ChargeResponse(txRef: request.txRef, status: "cancelled", success: false);
     }
 
-    return ChargeResponse(
-        txRef: request.txRef, status: "cancelled", success: false);
-  }
 }

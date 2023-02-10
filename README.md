@@ -34,7 +34,7 @@ Available features include:
 
 ## Installation
 
-1. Add the dependency to your project. In your `pubspec.yaml` file add: `flutterwave_standard: 1.0.5`
+1. Add the dependency to your project. In your `pubspec.yaml` file add: `flutterwave_standard: 1.0.7`
 2. Run `flutter pub get`
 
 

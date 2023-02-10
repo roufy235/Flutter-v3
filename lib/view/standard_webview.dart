@@ -10,6 +10,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'flutterwave_style.dart';
 
+@deprecated
 class StandardWebView extends StatefulWidget {
   final String url;
   final FlutterwaveStyle? style;
