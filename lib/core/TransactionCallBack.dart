@@ -1,5 +1,5 @@
+import 'package:flutterwave_standard/flutterwave.dart';
+
 abstract class TransactionCallBack {
-  onTransactionSuccess(String id, String txRef);
-  onTransactionError();
-  onCancelled();
+  onTransactionComplete(ChargeResponse? chargeResponse);
 }

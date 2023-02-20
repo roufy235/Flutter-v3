@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Standard Demo',
       home: MyHomePage('Flutterwave Standard'),
     );
@@ -170,10 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _handlePaymentInitialization() async {
-    final Customer customer = Customer(
-        name: "FLW Developer",
-        phoneNumber: this.phoneNumberController.text ?? "12345678",
-        email: "customer@customer.com");
+    final Customer customer = Customer(email: "customer@customer.com");
 
     final Flutterwave flutterwave = Flutterwave(
         context: context,
@@ -198,8 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String getPublicKey() {
-    if (isTestMode) return "FLWPUBK_TEST--X";
-    return "FLWPUBK--X";
+    return "";
   }
 
   void _openBottomSheet() {
@@ -248,7 +245,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> showLoading(String message) {
     return showDialog(
       context: this.context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
           content: Container(

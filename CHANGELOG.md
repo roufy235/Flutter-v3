@@ -1,3 +1,7 @@
+## [1.0.7] - February, 2023
+* Fixed iOS bug where webview couldn't close when close buttons are clicked
+* Removed required `name` and `phone number` fields in `Customer` object
+
 ## [1.0.6] - October, 2022
 * Fixed bug where transaction gets stuck after redirecting on webview
 * Fixed iOS build bug by removing inAppBrowser library
