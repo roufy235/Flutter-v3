@@ -67,9 +67,9 @@ _
          email: "customer@customer.com"  
      );            
         final Flutterwave flutterwave = Flutterwave(
-	        context: context, publicKey: "Public Key-here,
+	        context: context, publicKey: "Public Key-here",
     		currency: "currency-here",   
-            redirectUrl: "add-your-redirect-url-here"   
+            redirectUrl: "add-your-redirect-url-here",  
             txRef: "add-your-unique-reference-here",   
             amount: "3000",   
             customer: customer,   
