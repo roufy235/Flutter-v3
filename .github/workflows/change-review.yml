@@ -19,8 +19,8 @@ jobs:
         with:
           flutter-version: '2.5.3'
 
-      - name: Install dependencies
-        run: flutter pub get
+#      - name: Install dependencies
+#        run: flutter pub get
 
       - name: Run unit tests
         run: flutter test --coverage
