@@ -1,0 +1,48 @@
+
+name: Code Quality Check
+
+on:
+  push:
+    branched: ['develop']
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  version:
+    name: Code Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up flutter environment
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.5.3'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run unit tests
+        run: flutter test --coverage
+
+      - name: Install lcov
+        run: sudo apt-get install -y lcov
+
+      - name: Remove irrelevant files from coverage
+        run: lcov --remove coverage/lcov.info 'lib/view/*.dart' 'lib/*/*.freezed.dart' 'lib/*/*.g.dart' 'lib/*/*.part.dart' 'lib/generated/*.dart' 'lib/generated/*/*.dart' -o coverage/lcov.info
+
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          file: coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: push build status to Slack
+          uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          if: always()
+
