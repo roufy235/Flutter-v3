@@ -63,8 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   keyboardType: TextInputType.number,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(hintText: "Amount"),
-                  validator: (value) =>
-                      value.isNotEmpty ? null : "Amount is required",
+                  validator: (value) => value != null && value.isNotEmpty ? null : "Amount is required",
                 ),
               ),
               Container(
@@ -78,8 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: InputDecoration(
                     hintText: "Currency",
                   ),
-                  validator: (value) =>
-                      value.isNotEmpty ? null : "Currency is required",
+                  validator: (value) => value != null && value.isNotEmpty ? null : "Currency is required",
                 ),
               ),
               Container(
@@ -165,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _onPressed() {
-    if (this.formKey.currentState.validate()) {
+    if (this.formKey.currentState!.validate()) {
       this._handlePaymentInitialization();
     }
   }
