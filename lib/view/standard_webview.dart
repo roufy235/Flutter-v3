@@ -22,11 +22,38 @@ class StandardWebView extends StatefulWidget {
 
 class _StandardWebViewAppState extends State<StandardWebView> {
 
+  late WebViewController webViewController;
+
   @override
   void initState() {
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
+    webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String webUrl) {
+            final url = Uri.parse(webUrl);
+            _processUrl(url);
+          },
+          onPageFinished: (String url) {},
+          onHttpError: (HttpResponseError error) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            // if (request.url.startsWith('https://www.youtube.com/')) {
+            //   return NavigationDecision.prevent;
+            // }
+            return NavigationDecision.prevent;
+            //return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.url));
+    // if (Platform.isAndroid) {
+    //   WebView.platform = SurfaceAndroidWebView();
+    // }
     super.initState();
   }
 
@@ -49,21 +76,29 @@ class _StandardWebViewAppState extends State<StandardWebView> {
       );
     }
 
-      return SafeArea(
-          child: Scaffold(
-            key: _key,
-            appBar: appBar,
-            body: WebView(
-              initialUrl: widget.url,
-              javascriptMode:  JavascriptMode.unrestricted,
-              gestureRecognizers: gestureRecognizers,
-              onPageStarted: (webUrl) {
-                final url = Uri.parse(webUrl);
-                _processUrl(url);
-              },
-            ),
-          )
-      );
+    return SafeArea(
+        child: Scaffold(
+          key: _key,
+          appBar: appBar,
+          body: WebViewWidget(controller: webViewController)
+        )
+    );
+
+      // return SafeArea(
+      //     child: Scaffold(
+      //       key: _key,
+      //       appBar: appBar,
+      //       body: WebView(
+      //         initialUrl: widget.url,
+      //         javascriptMode:  JavascriptMode.unrestricted,
+      //         gestureRecognizers: gestureRecognizers,
+      //         onPageStarted: (webUrl) {
+      //           final url = Uri.parse(webUrl);
+      //           _processUrl(url);
+      //         },
+      //       ),
+      //     )
+      // );
   }
 
   _processUrl(Uri uri) {
