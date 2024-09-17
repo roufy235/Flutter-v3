@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+//import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutterwave_standard/core/TransactionCallBack.dart';
 import 'package:flutterwave_standard/models/responses/charge_response.dart';
+import 'package:webview_inapp/flutter_inappwebview.dart';
 
 import 'flutterwave_in_app_browser.dart';
 
